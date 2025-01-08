@@ -18,4 +18,88 @@ export const handlers = [
       { status: 200 }
     );
   }),
+
+  http.post("*/GetTokenBalancesSummary", async ({ request }) => {
+    const body = (await request.json()) as any;
+
+    return HttpResponse.json(
+      {
+        page: {
+          page: 1,
+        },
+        balances: [
+          {
+            contractType: "ERC721",
+            contractAddress: "0x0000000000000000000000000000000000000000",
+            accountAddress: body.accountAddress,
+            tokenID: "1",
+            balance: "1",
+            blockHash:
+              "0x0000000000000000000000000000000000000000000000000000000000000000",
+            blockNumber: 1,
+            chainId: 1,
+            uniqueCollectibles: "1",
+            isSummary: true,
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.post("*/GetTokenBalancesDetails", async ({ request }) => {
+    const body = (await request.json()) as any;
+
+    return HttpResponse.json(
+      {
+        page: {
+          page: 1,
+        },
+        balances: [
+          {
+            contractType: "ERC721",
+            contractAddress: "0x0000000000000000000000000000000000000000",
+            accountAddress: body.accountAddress,
+            tokenID: "1",
+            balance: "1",
+            blockHash:
+              "0x0000000000000000000000000000000000000000000000000000000000000000",
+            blockNumber: 1,
+            chainId: 1,
+            uniqueCollectibles: "1",
+            isSummary: true,
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.post("*/GetTokenBalancesByContract", async ({ request }) => {
+    const body = (await request.json()) as any;
+
+    return HttpResponse.json(
+      {
+        page: {
+          page: 1,
+        },
+        balances: [
+          {
+            contractType: "ERC721",
+            contractAddress: "0x0000000000000000000000000000000000000000",
+            accountAddress: body.accountAddress,
+            tokenID: "1",
+            balance: "1",
+            blockHash:
+              "0x0000000000000000000000000000000000000000000000000000000000000000",
+            blockNumber: 1,
+            chainId: 1,
+            uniqueCollectibles: "1",
+            isSummary: true,
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
 ];
