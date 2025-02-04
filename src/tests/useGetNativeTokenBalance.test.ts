@@ -1,46 +1,50 @@
-import { waitFor, renderHook } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
-import { describe, it, expect } from "vitest";
+import { renderHook, waitFor } from '@testing-library/react'
+import { HttpResponse, http } from 'msw'
+import { describe, expect, it } from 'vitest'
 
-import { createWrapper } from "./createWrapper";
+import { ACCOUNT_ADDRESS } from '../constants/tests'
+import { useGetNativeTokenBalance } from '../hooks/useGetNativeTokenBalance'
+import { createWrapper } from './createWrapper'
+import { server } from './setup'
 
-import { useGetNativeTokenBalance } from "../hooks/useGetNativeTokenBalance";
-import { server } from "./setup";
-
-const ACCOUNT_ADDRESS = "0x345458cfD2F0c808455342CD0A6e07a09f893292";
-
-describe("useGetNativeTokenBalance", () => {
-  it("should return a balance", async () => {
+describe('useGetNativeTokenBalance', () => {
+  it('should return a balance', async () => {
     const { result } = renderHook(
-      () => useGetNativeTokenBalance(ACCOUNT_ADDRESS, 1),
+      () =>
+        useGetNativeTokenBalance({
+          accountAddress: ACCOUNT_ADDRESS
+        }),
       {
-        wrapper: createWrapper(),
+        wrapper: createWrapper()
       }
-    );
+    )
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.balance.balance || 0);
+    const value = BigInt(result.current.data!.balances[0].result.balance || 0)
 
-    expect(value).toBeGreaterThan(0);
-  });
+    expect(value).toBeGreaterThan(0)
+  })
 
-  it("should return error when fetching balance fails", async () => {
+  it('should return error when fetching balance fails', async () => {
     server.use(
-      http.post("*", () => {
-        return HttpResponse.error();
+      http.post('*', () => {
+        return HttpResponse.error()
       })
-    );
+    )
 
     const { result } = renderHook(
-      () => useGetNativeTokenBalance(ACCOUNT_ADDRESS, 1),
+      () =>
+        useGetNativeTokenBalance({
+          accountAddress: ACCOUNT_ADDRESS
+        }, { retry: false }),
       {
-        wrapper: createWrapper(),
+        wrapper: createWrapper()
       }
-    );
+    )
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
-  });
-});
+    await waitFor(() => expect(result.current.isError).toBe(true))
+  })
+})
