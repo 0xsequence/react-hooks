@@ -7,13 +7,12 @@ import { useGetTokenBalancesByContract } from '../hooks/useGetTokenBalancesByCon
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
-import { ContractVerificationStatus } from '@0xsequence/indexer'
-import { GetTokenBalancesByContractArgs } from '@0xsequence/indexer/dist/declarations/src/indexergw.gen'
+import { IndexerGateway } from '@0xsequence/indexer'
 
-const getTokenBalancesByContractArgs: GetTokenBalancesByContractArgs = {
+const getTokenBalancesByContractArgs: IndexerGateway.GetTokenBalancesByContractArgs = {
   filter: {
     accountAddresses: [ACCOUNT_ADDRESS],
-    contractStatus: ContractVerificationStatus.ALL,
+    contractStatus: IndexerGateway.ContractVerificationStatus.ALL,
     contractAddresses: ['0x0000000000000000000000000000000000000000']
   }
 }

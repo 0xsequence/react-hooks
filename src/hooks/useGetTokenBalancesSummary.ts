@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query'
 import { time } from '../constants/hooks'
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
-import { GetTokenBalancesSummaryArgs } from '@0xsequence/indexer/dist/declarations/src/indexergw.gen'
+import { IndexerGateway } from '@0xsequence/indexer'
 
 export const useGetTokenBalancesSummary = (
-  getTokenBalancesSummaryArgs: GetTokenBalancesSummaryArgs,
+  getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs,
   options?: { disabled?: boolean; retry?: boolean }
 ) => {
   const indexerGatewayClient = useIndexerGatewayClient()
