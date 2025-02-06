@@ -24,7 +24,7 @@ describe('useGetTokenMetadata', () => {
 
     expect(result.current.data).toBeDefined()
 
-    const value = (result.current.data!.tokenMetadata[0].name || '')
+    const value = result.current.data!.tokenMetadata[0].name || ''
 
     expect(value).toBe('Test')
   })

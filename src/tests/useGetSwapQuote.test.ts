@@ -2,28 +2,32 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
+import { NATIVE_TOKEN_ADDRESS_0X } from '../constants/swaps'
 import { ACCOUNT_ADDRESS } from '../constants/tests'
-import { useGetNativeTokenBalance } from '../hooks/useGetNativeTokenBalance'
+import { useGetSwapQuote } from '../hooks/useGetSwapQuote'
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
-describe('useGetNativeTokenBalance', () => {
+const getSwapQuoteArgs = {
+  userAddress: ACCOUNT_ADDRESS,
+  buyCurrencyAddress: NATIVE_TOKEN_ADDRESS_0X,
+  sellCurrencyAddress: NATIVE_TOKEN_ADDRESS_0X,
+  buyAmount: '20000',
+  chainId: 1,
+  includeApprove: true
+}
+
+describe('useGetSwapQuote', () => {
   it('should return a balance', async () => {
-    const { result } = renderHook(
-      () =>
-        useGetNativeTokenBalance({
-          accountAddress: ACCOUNT_ADDRESS
-        }),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetSwapQuote(getSwapQuoteArgs), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.balances[0].result.balance || 0)
+    const value = BigInt(result.current.data!.currencyBalance || 0)
 
     expect(value).toBeGreaterThan(0)
   })
@@ -35,18 +39,9 @@ describe('useGetNativeTokenBalance', () => {
       })
     )
 
-    const { result } = renderHook(
-      () =>
-        useGetNativeTokenBalance(
-          {
-            accountAddress: ACCOUNT_ADDRESS
-          },
-          { retry: false }
-        ),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetSwapQuote(getSwapQuoteArgs, { retry: false }), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
   })

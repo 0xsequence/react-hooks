@@ -52,9 +52,7 @@ const getSwapPrices = async (
 
     const { withContractInfo, ...swapPricesArgs } = args
 
-    const res = await apiClient.getSwapPrices({
-      ...swapPricesArgs
-    })
+    const res = await apiClient.getSwapPrices(swapPricesArgs)
 
     if (res.swapPrices === null) {
       return []
