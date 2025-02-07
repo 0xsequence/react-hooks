@@ -18,7 +18,7 @@ const getSwapQuoteArgs = {
 }
 
 describe('useGetSwapQuote', () => {
-  it('should return a balance', async () => {
+  it('should return data with a balance', async () => {
     const { result } = renderHook(() => useGetSwapQuote(getSwapQuoteArgs), {
       wrapper: createWrapper()
     })
@@ -32,7 +32,7 @@ describe('useGetSwapQuote', () => {
     expect(value).toBeGreaterThan(0)
   })
 
-  it('should return error when fetching balance fails', async () => {
+  it('should return error when fetching data fails', async () => {
     server.use(
       http.post('*', () => {
         return HttpResponse.error()

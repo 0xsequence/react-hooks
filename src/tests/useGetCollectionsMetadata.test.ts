@@ -3,23 +3,27 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../constants/tests'
+import { useGetCollectionsMetadata } from '../hooks/useGetCollectionsMetadata'
 import { useGetTokenBalancesByContract } from '../hooks/useGetTokenBalancesByContract'
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
-import { IndexerGateway } from '@0xsequence/indexer'
+import { GetContractInfoArgs } from '@0xsequence/metadata'
 
-const getTokenBalancesByContractArgs: IndexerGateway.GetTokenBalancesByContractArgs = {
-  filter: {
-    accountAddresses: [ACCOUNT_ADDRESS],
-    contractStatus: IndexerGateway.ContractVerificationStatus.ALL,
-    contractAddresses: ['0x0000000000000000000000000000000000000000']
+const getCollectionsMetadataArgs: GetContractInfoArgs[] = [
+  {
+    chainID: '1',
+    contractAddress: '0x0000000000000000000000000000000000000000'
+  },
+  {
+    chainID: '1',
+    contractAddress: '0x0000000000000000000000000000000000000001'
   }
-}
+]
 
-describe('useGetTokenBalancesByContract', () => {
-  it('should return data with a balance', async () => {
-    const { result } = renderHook(() => useGetTokenBalancesByContract(getTokenBalancesByContractArgs), {
+describe('useGetCollectionsMetadata', () => {
+  it('should return data with name Ether', async () => {
+    const { result } = renderHook(() => useGetCollectionsMetadata(getCollectionsMetadataArgs), {
       wrapper: createWrapper()
     })
 
@@ -27,9 +31,9 @@ describe('useGetTokenBalancesByContract', () => {
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.balances[0].results[0].balance || 0)
+    const value = result.current.data![0].name || ''
 
-    expect(value).toBeGreaterThan(0)
+    expect(value).toBe('Ether')
   })
 
   it('should return error when fetching data fails', async () => {
@@ -40,7 +44,7 @@ describe('useGetTokenBalancesByContract', () => {
     )
 
     const { result } = renderHook(
-      () => useGetTokenBalancesByContract(getTokenBalancesByContractArgs, { retry: false }),
+      () => useGetCollectionsMetadata(getCollectionsMetadataArgs, { retry: false }),
       {
         wrapper: createWrapper()
       }

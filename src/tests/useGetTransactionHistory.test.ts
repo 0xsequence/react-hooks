@@ -16,7 +16,7 @@ const getTransactionHistoryArgs: GetTransactionHistoryArgs = {
 }
 
 describe('useGetTransactionHistory', () => {
-  it('should return a balance', async () => {
+  it('should return data with a transaction', async () => {
     const { result } = renderHook(() => useGetTransactionHistory(getTransactionHistoryArgs, 1), {
       wrapper: createWrapper()
     })
@@ -30,7 +30,7 @@ describe('useGetTransactionHistory', () => {
     expect(value).toBeDefined()
   })
 
-  it('should return error when fetching balance fails', async () => {
+  it('should return error when fetching data fails', async () => {
     server.use(
       http.post('*', () => {
         return HttpResponse.error()

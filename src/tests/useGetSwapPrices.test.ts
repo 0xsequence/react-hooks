@@ -17,7 +17,7 @@ const getSwapPricesArgs = {
 }
 
 describe('useGetSwapPrices', () => {
-  it('should return a balance', async () => {
+  it('should return data with a balance', async () => {
     const { result } = renderHook(() => useGetSwapPrices(getSwapPricesArgs), {
       wrapper: createWrapper()
     })
@@ -31,7 +31,7 @@ describe('useGetSwapPrices', () => {
     expect(value).toBeGreaterThan(0)
   })
 
-  it('should return error when fetching balance fails', async () => {
+  it('should return error when fetching data fails', async () => {
     server.use(
       http.post('*', () => {
         return HttpResponse.error()

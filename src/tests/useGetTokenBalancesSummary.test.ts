@@ -18,7 +18,7 @@ const getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs = 
 }
 
 describe('useGetTokenBalancesSummary', () => {
-  it('should return a balance', async () => {
+  it('should return data with a balance', async () => {
     const { result } = renderHook(() => useGetTokenBalancesSummary(getTokenBalancesSummaryArgs), {
       wrapper: createWrapper()
     })
@@ -32,7 +32,7 @@ describe('useGetTokenBalancesSummary', () => {
     expect(value).toBeGreaterThan(0)
   })
 
-  it('should return error when fetching balance fails', async () => {
+  it('should return error when fetching data fails', async () => {
     server.use(
       http.post('*', () => {
         return HttpResponse.error()

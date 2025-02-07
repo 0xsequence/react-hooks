@@ -14,7 +14,7 @@ const getContractInfoArgs: GetContractInfoArgs = {
 }
 
 describe('useGetContractInfo', () => {
-  it('should return a balance', async () => {
+  it('should return data with name Ether', async () => {
     const { result } = renderHook(() => useGetContractInfo(getContractInfoArgs), {
       wrapper: createWrapper()
     })
@@ -28,7 +28,7 @@ describe('useGetContractInfo', () => {
     expect(value).toBe('Ether')
   })
 
-  it('should return error when fetching balance fails', async () => {
+  it('should return error when fetching data fails', async () => {
     server.use(
       http.post('*', () => {
         return HttpResponse.error()

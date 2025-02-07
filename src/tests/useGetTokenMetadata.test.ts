@@ -15,7 +15,7 @@ const getTokenMetadataArgs: GetTokenMetadataArgs = {
 }
 
 describe('useGetTokenMetadata', () => {
-  it('should return a balance', async () => {
+  it('should return data with a name', async () => {
     const { result } = renderHook(() => useGetTokenMetadata(getTokenMetadataArgs), {
       wrapper: createWrapper()
     })
@@ -29,7 +29,7 @@ describe('useGetTokenMetadata', () => {
     expect(value).toBe('Test')
   })
 
-  it('should return error when fetching balance fails', async () => {
+  it('should return error when fetching data fails', async () => {
     server.use(
       http.post('*', () => {
         return HttpResponse.error()

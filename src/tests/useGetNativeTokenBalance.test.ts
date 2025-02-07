@@ -8,7 +8,7 @@ import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
 describe('useGetNativeTokenBalance', () => {
-  it('should return a balance', async () => {
+  it('should return data with balance', async () => {
     const { result } = renderHook(
       () =>
         useGetNativeTokenBalance({
@@ -28,7 +28,7 @@ describe('useGetNativeTokenBalance', () => {
     expect(value).toBeGreaterThan(0)
   })
 
-  it('should return error when fetching balance fails', async () => {
+  it('should return error when fetching data fails', async () => {
     server.use(
       http.post('*', () => {
         return HttpResponse.error()
