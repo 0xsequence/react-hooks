@@ -7,7 +7,7 @@ import { IndexerGateway } from '@0xsequence/indexer'
 
 export const useGetTokenBalancesSummary = (
   getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs,
-  options?: { disabled?: boolean; retry?: boolean }
+  options?: { hideCollectibles?: boolean; disabled?: boolean; retry?: boolean }
 ) => {
   const indexerGatewayClient = useIndexerGatewayClient()
 
