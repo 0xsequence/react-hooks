@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-interface Config {
+export interface Config {
   projectAccessKey: string;
 }
 
