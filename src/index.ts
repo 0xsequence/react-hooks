@@ -13,6 +13,7 @@ export { useGetTokenBalancesByContract } from './hooks/useGetTokenBalancesByCont
 // Metadata Hooks
 export { useGetContractInfo } from './hooks/useGetContractInfo'
 export { useGetTokenMetadata } from './hooks/useGetTokenMetadata'
+export { useGetCollectionsMetadata } from './hooks/useGetCollectionsMetadata'
 
 // Combination Hooks
 export { useGetSwapPrices } from './hooks/useGetSwapPrices'
