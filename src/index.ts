@@ -17,3 +17,6 @@ export { useGetCollectionsMetadata } from './hooks/useGetCollectionsMetadata'
 
 // Combination Hooks
 export { useGetSwapPrices } from './hooks/useGetSwapPrices'
+
+// Config Hook
+export { ConfigContext, ConfigProvider } from './contexts/ConfigContext'

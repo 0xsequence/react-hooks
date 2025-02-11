@@ -27,7 +27,7 @@ describe('useGetTokenBalancesDetails', () => {
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.balances[0].results[0].balance || 0)
+    const value = BigInt(result.current.data![0].balance || 0)
 
     expect(value).toBeGreaterThan(0)
   })

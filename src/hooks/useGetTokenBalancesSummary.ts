@@ -1,9 +1,45 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { time } from '../constants/hooks'
+import { createNativeTokenBalance } from '../utils/helpers'
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
-import { IndexerGateway } from '@0xsequence/indexer'
+import { ContractType, IndexerGateway, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
+
+const getTokenBalancesSummary = async (
+  getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs,
+  indexerGatewayClient: SequenceIndexerGateway,
+  hideCollectibles: boolean
+): Promise<TokenBalance[]> => {
+  try {
+    const res = await indexerGatewayClient.getTokenBalancesSummary(getTokenBalancesSummaryArgs)
+
+    if (hideCollectibles) {
+      for (const chainBalance of res.balances) {
+        chainBalance.results = chainBalance.results.filter(
+          result =>
+            result.contractType !== ContractType.ERC721 && result.contractType !== ContractType.ERC1155
+        )
+      }
+    }
+
+    const nativeTokens: TokenBalance[] = res.nativeBalances.flatMap(nativeChainBalance =>
+      nativeChainBalance.results.map(nativeTokenBalance =>
+        createNativeTokenBalance(
+          nativeChainBalance.chainId,
+          nativeTokenBalance.accountAddress,
+          nativeTokenBalance.balance
+        )
+      )
+    )
+
+    const tokens: TokenBalance[] = res.balances.flatMap(chainBalance => chainBalance.results)
+
+    return [...nativeTokens, ...tokens]
+  } catch (e) {
+    throw e
+  }
+}
 
 export const useGetTokenBalancesSummary = (
   getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs,
@@ -14,8 +50,11 @@ export const useGetTokenBalancesSummary = (
   return useQuery({
     queryKey: ['tokenBalancesSummary', getTokenBalancesSummaryArgs],
     queryFn: async () => {
-      const res = await indexerGatewayClient.getTokenBalancesSummary(getTokenBalancesSummaryArgs)
-      return res
+      return await getTokenBalancesSummary(
+        getTokenBalancesSummaryArgs,
+        indexerGatewayClient,
+        options?.hideCollectibles ?? false
+      )
     },
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,

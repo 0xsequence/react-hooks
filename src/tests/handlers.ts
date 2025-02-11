@@ -50,6 +50,19 @@ export const handlers = [
               }
             ]
           }
+        ],
+        nativeBalances: [
+          {
+            chainId: 1,
+            error: 'none',
+            results: [
+              {
+                accountAddress: body.accountAddress,
+                balance: '158495082541645504',
+                error: 'none'
+              }
+            ]
+          }
         ]
       },
       { status: 200 }
@@ -80,6 +93,19 @@ export const handlers = [
                 chainId: 1,
                 uniqueCollectibles: '1',
                 isSummary: true
+              }
+            ]
+          }
+        ],
+        nativeBalances: [
+          {
+            chainId: 1,
+            error: 'none',
+            results: [
+              {
+                accountAddress: body.accountAddress,
+                balance: '158495082541645504',
+                error: 'none'
               }
             ]
           }
@@ -243,5 +269,5 @@ export const handlers = [
       },
       { status: 200 }
     )
-  }),
+  })
 ]
