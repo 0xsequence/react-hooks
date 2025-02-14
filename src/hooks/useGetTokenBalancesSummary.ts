@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { time } from '../constants/hooks'
-import { createNativeTokenBalance } from '../utils/helpers'
+import { createNativeTokenBalance, sortBalancesByType } from '../utils/helpers'
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
 import { ContractType, IndexerGateway, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
@@ -35,7 +35,9 @@ const getTokenBalancesSummary = async (
 
     const tokens: TokenBalance[] = res.balances.flatMap(chainBalance => chainBalance.results)
 
-    return [...nativeTokens, ...tokens]
+    const sortedBalances = sortBalancesByType([...nativeTokens, ...tokens])
+
+    return [...sortedBalances.nativeTokens, ...sortedBalances.erc20Tokens, ...sortedBalances.collectibles]
   } catch (e) {
     throw e
   }
@@ -48,7 +50,7 @@ export const useGetTokenBalancesSummary = (
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({
-    queryKey: ['tokenBalancesSummary', getTokenBalancesSummaryArgs],
+    queryKey: ['tokenBalancesSummary', getTokenBalancesSummaryArgs, options],
     queryFn: async () => {
       return await getTokenBalancesSummary(
         getTokenBalancesSummaryArgs,

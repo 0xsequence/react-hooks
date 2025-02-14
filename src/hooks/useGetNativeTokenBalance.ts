@@ -12,7 +12,7 @@ export const useGetNativeTokenBalance = (
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({
-    queryKey: ['nativeTokenBalance', getNativeTokenBalanceArgs],
+    queryKey: ['nativeTokenBalance', getNativeTokenBalanceArgs, options],
     queryFn: async () => await indexerGatewayClient.getNativeTokenBalance(getNativeTokenBalanceArgs),
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,

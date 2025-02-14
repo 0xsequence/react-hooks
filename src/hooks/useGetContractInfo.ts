@@ -15,7 +15,7 @@ export const useGetContractInfo = (
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: ['contractInfo', getContractInfoArgs],
+    queryKey: ['contractInfo', getContractInfoArgs, options],
     queryFn: async () => {
       const isNativeToken = compareAddress(zeroAddress, getContractInfoArgs.contractAddress)
 

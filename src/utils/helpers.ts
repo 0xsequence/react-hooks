@@ -35,3 +35,40 @@ export const createNativeTokenBalance = (
     uniqueCollectibles: ''
   }
 }
+
+interface SortBalancesByTypeReturn {
+  nativeTokens: TokenBalance[]
+  erc20Tokens: TokenBalance[]
+  collectibles: TokenBalance[]
+}
+
+const compareTokenBalanceIds = (a: TokenBalance, b: TokenBalance) => {
+  return (a.tokenID || '').localeCompare(b.tokenID || '')
+}
+
+export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByTypeReturn => {
+  const nativeTokens: TokenBalance[] = []
+  const erc20Tokens: TokenBalance[] = []
+  const collectibles: TokenBalance[] = []
+
+  balances.forEach(balance => {
+    // Note: contractType for the native token should be "UNKNOWN"
+    if (balance.contractAddress === zeroAddress) {
+      nativeTokens.push(balance)
+    } else if (balance.contractType === 'ERC20') {
+      erc20Tokens.push(balance)
+    } else if (balance.contractType === 'ERC721' || balance.contractType === 'ERC1155') {
+      collectibles.push(balance)
+    }
+  })
+
+  const sortedNativeTokens = nativeTokens.sort(compareTokenBalanceIds)
+  const sortedErc20Tokens = erc20Tokens.sort(compareTokenBalanceIds)
+  const sortedCollectibles = collectibles.sort(compareTokenBalanceIds)
+
+  return {
+    nativeTokens: sortedNativeTokens,
+    erc20Tokens: sortedErc20Tokens,
+    collectibles: sortedCollectibles
+  }
+}

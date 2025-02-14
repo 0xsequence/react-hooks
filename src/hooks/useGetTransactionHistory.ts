@@ -13,7 +13,7 @@ export const useGetTransactionHistory = (
   const indexerClient = useIndexerClient(chainId)
 
   return useQuery({
-    queryKey: ['transactionHistory', getTransactionHistoryArgs],
+    queryKey: ['transactionHistory', getTransactionHistoryArgs, options],
     queryFn: async () => {
       const res = await indexerClient.getTransactionHistory(getTransactionHistoryArgs)
       return res

@@ -26,7 +26,7 @@ export const useGetCollectionsMetadata = (
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: ['collectionsMetadata', useGetCollectionsMetadataArgs],
+    queryKey: ['collectionsMetadata', useGetCollectionsMetadataArgs, options],
     queryFn: async () => await getCollectionsMetadata(metadataClient, useGetCollectionsMetadataArgs),
     retry: options?.retry ?? true,
     staleTime: time.oneHour,

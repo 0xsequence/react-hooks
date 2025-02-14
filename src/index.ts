@@ -20,3 +20,4 @@ export { useGetSwapPrices } from './hooks/useGetSwapPrices'
 
 // Config Hook
 export { ConfigContext, ConfigProvider } from './contexts/ConfigContext'
+export type { Config } from './contexts/ConfigContext'

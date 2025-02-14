@@ -12,7 +12,7 @@ export const useGetTokenBalancesByContract = (
   const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({
-    queryKey: ['tokenBalancesByContract', getTokenBalancesByContractArgs],
+    queryKey: ['tokenBalancesByContract', getTokenBalancesByContractArgs, options],
     queryFn: async () => {
       const res = await indexerGatewayClient.getTokenBalancesByContract(getTokenBalancesByContractArgs)
       return res

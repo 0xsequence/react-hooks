@@ -15,7 +15,7 @@ export const useGetSwapQuote = (
   const apiClient = useAPIClient()
 
   return useQuery({
-    queryKey: ['swapQuotes', getSwapQuoteArgs],
+    queryKey: ['swapQuotes', getSwapQuoteArgs, options],
     queryFn: async () => {
       const res = await apiClient.getSwapQuote({
         ...getSwapQuoteArgs,

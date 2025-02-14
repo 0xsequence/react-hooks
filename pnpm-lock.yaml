@@ -13,16 +13,16 @@ importers:
         version: 2.22.21(typescript@5.7.3)
     devDependencies:
       '@0xsequence/api':
-        specifier: '=2.2.13'
+        specifier: '>=2.2.13'
         version: 2.2.13
       '@0xsequence/indexer':
-        specifier: '=2.2.13'
+        specifier: '>=2.2.13'
         version: 2.2.13
       '@0xsequence/metadata':
-        specifier: '=2.2.13'
+        specifier: '>=2.2.13'
         version: 2.2.13
       '@0xsequence/network':
-        specifier: '=2.2.13'
+        specifier: '>=2.2.13'
         version: 2.2.13(ethers@6.13.4)
       '@tanstack/react-query':
         specifier: ^5.62.0

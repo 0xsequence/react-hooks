@@ -174,7 +174,7 @@ export const useGetSwapPrices = (
     !options?.disabled
 
   return useQuery({
-    queryKey: ['swapPrices', args],
+    queryKey: ['swapPrices', args, options],
     queryFn: () => getSwapPrices(apiClient, metadataClient, indexerGatewayClient, args),
     retry: options?.retry ?? true,
     // We must keep a long staletime to avoid the list of quotes being refreshed while the user is doing the transactions

@@ -47,7 +47,7 @@ export const useGetTokenMetadata = (
   const metadataClient = useMetadataClient()
 
   return useQuery({
-    queryKey: ['tokenMetadata', getTokenMetadataArgs],
+    queryKey: ['tokenMetadata', getTokenMetadataArgs, options],
     queryFn: () => getTokenMetadata(metadataClient, getTokenMetadataArgs),
     retry: options?.retry ?? true,
     staleTime: time.oneHour,
