@@ -1,25 +1,45 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { time } from '../constants/hooks'
-import { useIndexerClient } from './useIndexerClient'
+import { useIndexerClients } from './useIndexerClient'
 
-import { GetTransactionHistoryArgs } from '@0xsequence/indexer'
+import { GetTransactionHistoryArgs, SequenceIndexer, Transaction } from '@0xsequence/indexer'
+
+const getTransactionHistory = async (
+  indexerClients: Map<number, SequenceIndexer>,
+  getTransactionHistoryArgs: GetTransactionHistoryArgs
+): Promise<Transaction[]> => {
+  const histories = await Promise.all(
+    Array.from(indexerClients.values()).map(indexerClient =>
+      indexerClient.getTransactionHistory(getTransactionHistoryArgs)
+    )
+  )
+
+  const unorderedTransactions = histories.map(history => history.transactions).flat()
+  const orderedTransactions = unorderedTransactions.sort((a, b) => {
+    const firstDate = new Date(a.timestamp).getTime()
+    const secondDate = new Date(b.timestamp).getTime()
+    return secondDate - firstDate
+  })
+
+  return orderedTransactions
+}
 
 export const useGetTransactionHistory = (
   getTransactionHistoryArgs: GetTransactionHistoryArgs,
-  chainId: number,
+  chainIds: number[],
   options?: { disabled?: boolean; retry?: boolean }
 ) => {
-  const indexerClient = useIndexerClient(chainId)
+  const indexerClients = useIndexerClients(chainIds)
 
   return useQuery({
     queryKey: ['transactionHistory', getTransactionHistoryArgs, options],
     queryFn: async () => {
-      const res = await indexerClient.getTransactionHistory(getTransactionHistoryArgs)
-      return res
+      return await getTransactionHistory(indexerClients, getTransactionHistoryArgs)
     },
     retry: options?.retry ?? true,
-    staleTime: time.oneSecond * 30,
-    enabled: !!getTransactionHistoryArgs.filter.accountAddress && !options?.disabled
+    staleTime: time.oneSecond,
+    refetchOnMount: true,
+    enabled: chainIds.length > 0 && !!getTransactionHistoryArgs.filter.accountAddress && !options?.disabled
   })
 }

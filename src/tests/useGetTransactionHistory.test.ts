@@ -17,7 +17,7 @@ const getTransactionHistoryArgs: GetTransactionHistoryArgs = {
 
 describe('useGetTransactionHistory', () => {
   it('should return data with a transaction', async () => {
-    const { result } = renderHook(() => useGetTransactionHistory(getTransactionHistoryArgs, 1), {
+    const { result } = renderHook(() => useGetTransactionHistory(getTransactionHistoryArgs, [1]), {
       wrapper: createWrapper()
     })
 
@@ -25,7 +25,7 @@ describe('useGetTransactionHistory', () => {
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.transactions[0].txnHash || '')
+    const value = BigInt(result.current.data![0].txnHash || '')
 
     expect(value).toBeDefined()
   })
@@ -38,7 +38,7 @@ describe('useGetTransactionHistory', () => {
     )
 
     const { result } = renderHook(
-      () => useGetTransactionHistory(getTransactionHistoryArgs, 1, { retry: false }),
+      () => useGetTransactionHistory(getTransactionHistoryArgs, [1], { retry: false }),
       {
         wrapper: createWrapper()
       }
