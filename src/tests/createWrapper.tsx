@@ -22,6 +22,12 @@ export const createWrapper = () => {
       <ReactHooksConfigProvider
         value={{
           projectAccessKey: "test-access",
+          env: {
+            indexerGatewayUrl: "https://indexer-gateway.sequence.app",
+            metadataUrl: "https://metadata.sequence.app",
+            indexerUrl: "https://indexer.sequence.app",
+            imageProxyUrl: "https://image-proxy.sequence.app",
+          },
         }}
       >
         {children}

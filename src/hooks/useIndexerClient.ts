@@ -1,23 +1,24 @@
 import { useMemo } from 'react'
 
-import { env } from '../config/networks'
+import { useNetwork } from '../hooks/useNetwork'
+import { envString } from '../utils/envstring'
 import { useConfig } from './useConfig'
 
 import { SequenceIndexer } from '@0xsequence/indexer'
 import { ChainId, networks } from '@0xsequence/network'
 
 export const useIndexerClient = (chainId: ChainId) => {
-  const { projectAccessKey } = useConfig()
+  const { projectAccessKey, env } = useConfig()
 
   const indexerClients = useMemo(() => {
     return new Map<ChainId, SequenceIndexer>()
   }, [projectAccessKey])
 
-  const network = networks[chainId]
-  const clientUrl = env.SERVICES.getIndexerUrl(network.name)
+  const network = useNetwork(chainId)
+  const indexerUrl = envString(env.indexerUrl, 'indexer', network.name)
 
   if (!indexerClients.has(chainId)) {
-    indexerClients.set(chainId, new SequenceIndexer(clientUrl, projectAccessKey))
+    indexerClients.set(chainId, new SequenceIndexer(indexerUrl, projectAccessKey))
   }
 
   const indexerClient = indexerClients.get(chainId)
@@ -30,7 +31,7 @@ export const useIndexerClient = (chainId: ChainId) => {
 }
 
 export const useIndexerClients = (chainIds: number[]) => {
-  const { projectAccessKey } = useConfig()
+  const { projectAccessKey, env } = useConfig()
 
   const indexerClients = useMemo(() => {
     return new Map<ChainId, SequenceIndexer>()
@@ -40,10 +41,10 @@ export const useIndexerClients = (chainIds: number[]) => {
 
   for (const chainId of chainIds) {
     const network = networks[chainId as ChainId]
-    const clientUrl = env.SERVICES.getIndexerUrl(network.name)
+    const indexerUrl = envString(env.indexerUrl, 'indexer', network.name)
 
     if (!indexerClients.has(chainId)) {
-      indexerClients.set(chainId, new SequenceIndexer(clientUrl, projectAccessKey))
+      indexerClients.set(chainId, new SequenceIndexer(indexerUrl, projectAccessKey))
     }
 
     const indexerClient = indexerClients.get(chainId)

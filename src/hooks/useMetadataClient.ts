@@ -1,15 +1,14 @@
 import { useMemo } from 'react'
 
-import { env } from '../config/networks'
 import { useConfig } from './useConfig'
 
 import { SequenceMetadata } from '@0xsequence/metadata'
 
 export const useMetadataClient = () => {
-  const { projectAccessKey } = useConfig()
+  const { projectAccessKey, env } = useConfig()
 
   const metadataClient = useMemo(() => {
-    const clientUrl = env.SERVICES.metadata
+    const clientUrl = env.metadataUrl
 
     return new SequenceMetadata(clientUrl, projectAccessKey)
   }, [projectAccessKey])

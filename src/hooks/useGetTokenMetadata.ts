@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { env } from '../config/networks'
 import { time } from '../constants/hooks'
 import { splitEvery } from '../utils/helpers'
+import { useConfig } from './useConfig'
 import { useMetadataClient } from './useMetadataClient'
 
 import { GetTokenMetadataArgs, GetTokenMetadataReturn, SequenceMetadata } from '@0xsequence/metadata'
 
 const getTokenMetadata = async (
   metadataClient: SequenceMetadata,
-  args: GetTokenMetadataArgs
+  args: GetTokenMetadataArgs,
+  imageProxyUrl: string
 ): Promise<GetTokenMetadataReturn> => {
   try {
     const { chainID, contractAddress, tokenIDs } = args
@@ -31,11 +32,12 @@ const getTokenMetadata = async (
 
     data.forEach(d => {
       if (d?.image) {
-        d.image = `${env.SERVICES.imageProxy}${d.image}`
+        d.image = `${imageProxyUrl}${d.image}`
       }
     })
     return { tokenMetadata: data }
   } catch (e) {
+    console.log(e)
     throw e
   }
 }
@@ -44,11 +46,12 @@ export const useGetTokenMetadata = (
   getTokenMetadataArgs: GetTokenMetadataArgs,
   options?: { disabled?: boolean; retry?: boolean }
 ) => {
+  const { env } = useConfig()
   const metadataClient = useMetadataClient()
 
   return useQuery({
     queryKey: ['tokenMetadata', getTokenMetadataArgs, options],
-    queryFn: () => getTokenMetadata(metadataClient, getTokenMetadataArgs),
+    queryFn: () => getTokenMetadata(metadataClient, getTokenMetadataArgs, env.imageProxyUrl),
     retry: options?.retry ?? true,
     staleTime: time.oneHour,
     enabled: !!getTokenMetadataArgs.chainID && !!getTokenMetadataArgs.contractAddress && !options?.disabled
