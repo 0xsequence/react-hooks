@@ -5,7 +5,7 @@ import { useIndexerClients } from './useIndexerClient'
 
 import { GetTransactionHistoryArgs, SequenceIndexer, Transaction } from '@0xsequence/indexer'
 
-const getTransactionHistory = async (
+const getTransactionHistorySummary = async (
   indexerClients: Map<number, SequenceIndexer>,
   getTransactionHistoryArgs: GetTransactionHistoryArgs
 ): Promise<Transaction[]> => {
@@ -25,7 +25,7 @@ const getTransactionHistory = async (
   return orderedTransactions
 }
 
-export const useGetTransactionHistory = (
+export const useGetTransactionHistorySummary = (
   getTransactionHistoryArgs: GetTransactionHistoryArgs,
   chainIds: number[],
   options?: { disabled?: boolean; retry?: boolean }
@@ -35,7 +35,7 @@ export const useGetTransactionHistory = (
   return useQuery({
     queryKey: ['transactionHistory', getTransactionHistoryArgs, options],
     queryFn: async () => {
-      return await getTransactionHistory(indexerClients, getTransactionHistoryArgs)
+      return await getTransactionHistorySummary(indexerClients, getTransactionHistoryArgs)
     },
     retry: options?.retry ?? true,
     staleTime: time.oneSecond,

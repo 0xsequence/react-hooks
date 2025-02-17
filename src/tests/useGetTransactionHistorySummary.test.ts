@@ -3,21 +3,21 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../constants/tests'
-import { useGetTransactionHistory } from '../hooks/useGetTransactionHistory'
+import { useGetTransactionHistorySummary } from '../hooks/useGetTransactionHistorySummary'
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
 import { GetTransactionHistoryArgs } from '@0xsequence/indexer'
 
-const getTransactionHistoryArgs: GetTransactionHistoryArgs = {
+const getTransactionHistorySummaryArgs: GetTransactionHistoryArgs = {
   filter: {
     accountAddress: ACCOUNT_ADDRESS
   }
 }
 
-describe('useGetTransactionHistory', () => {
+describe('useGetTransactionHistorySummary', () => {
   it('should return data with a transaction', async () => {
-    const { result } = renderHook(() => useGetTransactionHistory(getTransactionHistoryArgs, [1]), {
+    const { result } = renderHook(() => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1]), {
       wrapper: createWrapper()
     })
 
@@ -38,7 +38,7 @@ describe('useGetTransactionHistory', () => {
     )
 
     const { result } = renderHook(
-      () => useGetTransactionHistory(getTransactionHistoryArgs, [1], { retry: false }),
+      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1], { retry: false }),
       {
         wrapper: createWrapper()
       }

@@ -1,8 +1,7 @@
 // API Hooks
-export { useGetSwapQuote } from './hooks/useGetSwapQuote'
 
 // Indexer Hooks
-export { useGetTransactionHistory } from './hooks/useGetTransactionHistory'
+export { useGetTransactionHistorySummary } from './hooks/useGetTransactionHistorySummary'
 
 // Indexer Gateway Hooks
 export { useGetNativeTokenBalance } from './hooks/useGetNativeTokenBalance'
@@ -16,7 +15,6 @@ export { useGetTokenMetadata } from './hooks/useGetTokenMetadata'
 export { useGetCollectionsMetadata } from './hooks/useGetCollectionsMetadata'
 
 // Combination Hooks
-export { useGetSwapPrices } from './hooks/useGetSwapPrices'
 
 // Config Hook
 export { ConfigContext, ConfigProvider } from './contexts/ConfigContext'
