@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-interface ReactHooksConfig {
+export interface ReactHooksConfig {
   projectAccessKey: string;
 }
 
