@@ -1,4 +1,4 @@
-import { zeroAddress } from 'viem'
+import { ZERO_ADDRESS } from '../constants/hooks'
 
 import { ContractType, TokenBalance } from '@0xsequence/indexer'
 
@@ -25,7 +25,7 @@ export const createNativeTokenBalance = (
 ): TokenBalance => {
   return {
     chainId,
-    contractAddress: zeroAddress,
+    contractAddress: ZERO_ADDRESS,
     accountAddress,
     contractType: ContractType.NATIVE,
     balance,
@@ -54,7 +54,7 @@ export const sortBalancesByType = (balances: TokenBalance[]): SortBalancesByType
 
   balances.forEach(balance => {
     // Note: contractType for the native token should be "UNKNOWN"
-    if (balance.contractAddress === zeroAddress) {
+    if (balance.contractAddress === ZERO_ADDRESS) {
       nativeTokens.push(balance)
     } else if (balance.contractType === 'ERC20') {
       erc20Tokens.push(balance)

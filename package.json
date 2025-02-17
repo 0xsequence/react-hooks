@@ -36,9 +36,9 @@
     "@0xsequence/indexer": ">=2.2.13",
     "@0xsequence/metadata": ">=2.2.13",
     "@0xsequence/network": ">=2.2.13",
-    "@tanstack/react-query": "^5.62.0",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.7",
+    "@tanstack/react-query": "^5.62.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
@@ -54,8 +54,5 @@
     "typescript": "^5.7.3",
     "vite": "^6.0.2",
     "vitest": "^2.1.8"
-  },
-  "dependencies": {
-    "viem": "^2.22.21"
   }
 }

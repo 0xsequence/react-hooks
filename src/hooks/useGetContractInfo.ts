@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { zeroAddress } from 'viem'
 
-import { time } from '../constants/hooks'
+import { ZERO_ADDRESS, time } from '../constants/hooks'
 import { compareAddress } from '../utils/helpers'
 import { useMetadataClient } from './useMetadataClient'
 
@@ -17,7 +16,7 @@ export const useGetContractInfo = (
   return useQuery({
     queryKey: ['contractInfo', getContractInfoArgs, options],
     queryFn: async () => {
-      const isNativeToken = compareAddress(zeroAddress, getContractInfoArgs.contractAddress)
+      const isNativeToken = compareAddress(ZERO_ADDRESS, getContractInfoArgs.contractAddress)
 
       const res = await metadataClient.getContractInfo(getContractInfoArgs)
       const network = findSupportedNetwork(getContractInfoArgs.chainID)
