@@ -17,5 +17,5 @@ export { useGetCollectionsMetadata } from './hooks/useGetCollectionsMetadata'
 // Combination Hooks
 
 // Config Hook
-export { ConfigContext, ConfigProvider } from './contexts/ConfigContext'
-export type { Config } from './contexts/ConfigContext'
+export { ReactHooksConfigProvider } from './contexts/ConfigContext'
+export type { ReactHooksConfig } from './contexts/ConfigContext'

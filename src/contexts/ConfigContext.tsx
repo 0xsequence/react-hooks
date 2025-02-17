@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
-export interface Config {
+export interface ReactHooksConfig {
   projectAccessKey: string;
 }
 
-export const ConfigContext = createContext<Config | null>(null);
+export const ReactHooksConfigContext = createContext<ReactHooksConfig | null>(null);
 
-export const ConfigProvider = ConfigContext.Provider;
+export const ReactHooksConfigProvider = ReactHooksConfigContext.Provider;
