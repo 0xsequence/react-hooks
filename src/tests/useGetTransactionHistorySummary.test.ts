@@ -17,9 +17,12 @@ const getTransactionHistorySummaryArgs: GetTransactionHistoryArgs = {
 
 describe('useGetTransactionHistorySummary', () => {
   it('should return data with a transaction', async () => {
-    const { result } = renderHook(() => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1]), {
-      wrapper: createWrapper()
-    })
+    const { result } = renderHook(
+      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1]),
+      {
+        wrapper: createWrapper()
+      }
+    )
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 

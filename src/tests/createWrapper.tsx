@@ -1,7 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { ConfigProvider } from "../contexts/ConfigContext";
+import { ReactHooksConfigProvider } from "../contexts/ConfigContext";
 
 interface CreateWrapperProps {
   children: React.ReactNode;
@@ -19,13 +19,13 @@ export const createWrapper = () => {
 
   return ({ children }: CreateWrapperProps) => (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider
+      <ReactHooksConfigProvider
         value={{
           projectAccessKey: "test-access",
         }}
       >
         {children}
-      </ConfigProvider>
+      </ReactHooksConfigProvider>
     </QueryClientProvider>
   );
 };

@@ -2,9 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { ACCOUNT_ADDRESS } from '../constants/tests'
 import { useGetCollectionsMetadata } from '../hooks/useGetCollectionsMetadata'
-import { useGetTokenBalancesByContract } from '../hooks/useGetTokenBalancesByContract'
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 

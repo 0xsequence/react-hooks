@@ -1,5 +1,6 @@
-import { ContractType, TokenBalance } from '@0xsequence/indexer'
 import { zeroAddress } from 'viem'
+
+import { ContractType, TokenBalance } from '@0xsequence/indexer'
 
 export const compareAddress = (a: string, b: string) => {
   return a.toLowerCase() === b.toLowerCase()
