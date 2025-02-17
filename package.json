@@ -7,6 +7,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -20,7 +23,7 @@
     "build": "tsup",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "changeset:publish": "pnpm build && pnpm test && changeset publish"
+    "changeset:publish": "pnpm build && pnpm test && changeset publish --scope=0xsequence"
   },
   "peerDependencies": {
     "@0xsequence/api": ">=2.2.13",
