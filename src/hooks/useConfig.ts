@@ -1,13 +1,13 @@
-import { useContext } from "react";
+import { useContext } from 'react'
 
-import { ConfigContext } from "../contexts/ConfigContext";
+import { ReactHooksConfigContext } from '../contexts/ConfigContext'
 
 export const useConfig = () => {
-  const config = useContext(ConfigContext);
+  const config = useContext(ReactHooksConfigContext)
 
   if (!config) {
-    throw new Error("useConfig must be used within a ConfigProvider");
+    throw new Error('useConfig must be used within a ConfigProvider')
   }
 
-  return config;
-};
+  return config
+}

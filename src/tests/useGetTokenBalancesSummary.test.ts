@@ -3,27 +3,31 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../constants/tests'
-import { useGetNativeTokenBalance } from '../hooks/useGetNativeTokenBalance'
+import { useGetTokenBalancesSummary } from '../hooks/useGetTokenBalancesSummary'
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
-describe('useGetNativeTokenBalance', () => {
-  it('should return data with balance', async () => {
-    const { result } = renderHook(
-      () =>
-        useGetNativeTokenBalance({
-          accountAddress: ACCOUNT_ADDRESS
-        }),
-      {
-        wrapper: createWrapper()
-      }
-    )
+import { IndexerGateway } from '@0xsequence/indexer'
+
+const getTokenBalancesSummaryArgs: IndexerGateway.GetTokenBalancesSummaryArgs = {
+  filter: {
+    accountAddresses: [ACCOUNT_ADDRESS],
+    contractStatus: IndexerGateway.ContractVerificationStatus.ALL,
+    omitNativeBalances: false
+  }
+}
+
+describe('useGetTokenBalancesSummary', () => {
+  it('should return data with a balance', async () => {
+    const { result } = renderHook(() => useGetTokenBalancesSummary(getTokenBalancesSummaryArgs), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.balances[0].result.balance || 0)
+    const value = BigInt(result.current.data![0].balance || 0)
 
     expect(value).toBeGreaterThan(0)
   })
@@ -36,13 +40,7 @@ describe('useGetNativeTokenBalance', () => {
     )
 
     const { result } = renderHook(
-      () =>
-        useGetNativeTokenBalance(
-          {
-            accountAddress: ACCOUNT_ADDRESS
-          },
-          { retry: false }
-        ),
+      () => useGetTokenBalancesSummary(getTokenBalancesSummaryArgs, { retry: false }),
       {
         wrapper: createWrapper()
       }

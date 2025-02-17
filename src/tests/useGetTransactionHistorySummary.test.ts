@@ -3,17 +3,22 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../constants/tests'
-import { useGetNativeTokenBalance } from '../hooks/useGetNativeTokenBalance'
+import { useGetTransactionHistorySummary } from '../hooks/useGetTransactionHistorySummary'
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
-describe('useGetNativeTokenBalance', () => {
-  it('should return data with balance', async () => {
+import { GetTransactionHistoryArgs } from '@0xsequence/indexer'
+
+const getTransactionHistorySummaryArgs: GetTransactionHistoryArgs = {
+  filter: {
+    accountAddress: ACCOUNT_ADDRESS
+  }
+}
+
+describe('useGetTransactionHistorySummary', () => {
+  it('should return data with a transaction', async () => {
     const { result } = renderHook(
-      () =>
-        useGetNativeTokenBalance({
-          accountAddress: ACCOUNT_ADDRESS
-        }),
+      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1]),
       {
         wrapper: createWrapper()
       }
@@ -23,9 +28,9 @@ describe('useGetNativeTokenBalance', () => {
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.balances[0].result.balance || 0)
+    const value = BigInt(result.current.data![0].txnHash || '')
 
-    expect(value).toBeGreaterThan(0)
+    expect(value).toBeDefined()
   })
 
   it('should return error when fetching data fails', async () => {
@@ -36,13 +41,7 @@ describe('useGetNativeTokenBalance', () => {
     )
 
     const { result } = renderHook(
-      () =>
-        useGetNativeTokenBalance(
-          {
-            accountAddress: ACCOUNT_ADDRESS
-          },
-          { retry: false }
-        ),
+      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1], { retry: false }),
       {
         wrapper: createWrapper()
       }

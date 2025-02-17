@@ -1,31 +1,48 @@
 {
   "name": "@0xsequence/react-hooks",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "React hooks for sequence data",
   "keywords": [],
-  "author": "Corban Riley",
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "scripts": {
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "format": "prettier -w '**/*.ts'",
+    "build": "tsup",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "pnpm build && pnpm test && changeset publish"
   },
   "peerDependencies": {
-    "@0xsequence/api": ">= 2.1.7",
-    "@0xsequence/indexer": ">= 2.1.7",
-    "@0xsequence/metadata": ">= 2.1.7",
-    "@0xsequence/network": ">= 2.1.7",
-    "@tanstack/react-query": ">= 5"
+    "@0xsequence/api": ">=2.2.13",
+    "@0xsequence/indexer": ">=2.2.13",
+    "@0xsequence/metadata": ">=2.2.13",
+    "@0xsequence/network": ">=2.2.13",
+    "@tanstack/react-query": ">= 5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@0xsequence/api": "^2.1.7",
-    "@0xsequence/indexer": "^2.1.7",
-    "@0xsequence/metadata": "^2.1.7",
-    "@0xsequence/network": "^2.1.7",
+    "@0xsequence/api": ">=2.2.13",
+    "@0xsequence/indexer": ">=2.2.13",
+    "@0xsequence/metadata": ">=2.2.13",
+    "@0xsequence/network": ">=2.2.13",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.7",
     "@tanstack/react-query": "^5.62.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
+    "@trivago/prettier-plugin-sort-imports": "4.3.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
@@ -33,6 +50,8 @@
     "msw": "^2.6.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3",
     "vite": "^6.0.2",
     "vitest": "^2.1.8"
   }

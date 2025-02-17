@@ -1,20 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import { useIndexerClient } from "./useIndexerClient";
+import { useQuery } from '@tanstack/react-query'
+
+import { time } from '../constants/hooks'
+import { useIndexerGatewayClient } from './useIndexerGatewayClient'
+
+import { IndexerGateway } from '@0xsequence/indexer'
 
 export const useGetNativeTokenBalance = (
-  accountAddress: string,
-  chainId: number
+  getNativeTokenBalanceArgs: IndexerGateway.GetNativeTokenBalanceArgs,
+  options?: { disabled?: boolean; retry?: boolean }
 ) => {
-  const indexerClient = useIndexerClient(chainId);
+  const indexerGatewayClient = useIndexerGatewayClient()
 
   return useQuery({
-    queryKey: ["nativeTokenBalance", accountAddress, chainId],
-    queryFn: async () => {
-      const res = await indexerClient.getNativeTokenBalance({
-        accountAddress,
-      });
-
-      return res;
-    },
-  });
-};
+    queryKey: ['nativeTokenBalance', getNativeTokenBalanceArgs, options],
+    queryFn: async () => await indexerGatewayClient.getNativeTokenBalance(getNativeTokenBalanceArgs),
+    retry: options?.retry ?? true,
+    staleTime: time.oneSecond * 30,
+    enabled: !!getNativeTokenBalanceArgs.accountAddress && !options?.disabled
+  })
+}

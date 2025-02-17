@@ -1,7 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { ConfigProvider } from "../contexts/ConfigContext";
+import { ReactHooksConfigProvider } from "../contexts/ConfigContext";
 
 interface CreateWrapperProps {
   children: React.ReactNode;
@@ -19,13 +19,19 @@ export const createWrapper = () => {
 
   return ({ children }: CreateWrapperProps) => (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider
+      <ReactHooksConfigProvider
         value={{
           projectAccessKey: "test-access",
+          env: {
+            indexerGatewayUrl: "https://indexer-gateway.sequence.app",
+            metadataUrl: "https://metadata.sequence.app",
+            indexerUrl: "https://indexer.sequence.app",
+            imageProxyUrl: "https://image-proxy.sequence.app",
+          },
         }}
       >
         {children}
-      </ConfigProvider>
+      </ReactHooksConfigProvider>
     </QueryClientProvider>
   );
 };

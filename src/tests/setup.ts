@@ -1,15 +1,16 @@
-import "@testing-library/jest-dom";
-import { setupServer } from "msw/node";
-import { beforeAll, afterEach, afterAll } from "vitest";
-import { handlers } from "./handlers";
+import '@testing-library/jest-dom'
+import { setupServer } from 'msw/node'
+import { afterAll, afterEach, beforeAll } from 'vitest'
 
-export const server = setupServer(...handlers);
+import { handlers } from './handlers'
 
-beforeAll(() => server.listen());
+export const server = setupServer(...handlers)
 
-afterEach(() => server.resetHandlers());
+beforeAll(() => server.listen())
 
-afterAll(() => server.close());
+afterEach(() => server.resetHandlers())
+
+afterAll(() => server.close())
 
 // DEBUG: For debugging intercepted requests
 // server.events.on("request:start", ({ request }) => {
