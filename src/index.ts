@@ -18,4 +18,3 @@ export { useGetCollectionsMetadata } from './hooks/useGetCollectionsMetadata'
 
 // Config Hook
 export { ReactHooksConfigProvider } from './contexts/ConfigContext'
-export type { ReactHooksConfig } from './contexts/ConfigContext'
