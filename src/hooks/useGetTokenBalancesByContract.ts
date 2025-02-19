@@ -3,7 +3,16 @@ import { useQuery } from '@tanstack/react-query'
 import { time } from '../constants/hooks'
 import { useIndexerGatewayClient } from './useIndexerGatewayClient'
 
-import { IndexerGateway } from '@0xsequence/indexer'
+import { IndexerGateway, SequenceIndexerGateway, TokenBalance } from '@0xsequence/indexer'
+
+const getTokenBalancesByContract = async (
+  indexerGatewayClient: SequenceIndexerGateway,
+  getTokenBalancesByContractArgs: IndexerGateway.GetTokenBalancesByContractArgs
+): Promise<TokenBalance[]> => {
+  const res = await indexerGatewayClient.getTokenBalancesByContract(getTokenBalancesByContractArgs)
+
+  return res.balances.flatMap(balance => balance.results)
+}
 
 export const useGetTokenBalancesByContract = (
   getTokenBalancesByContractArgs: IndexerGateway.GetTokenBalancesByContractArgs,
@@ -14,8 +23,7 @@ export const useGetTokenBalancesByContract = (
   return useQuery({
     queryKey: ['tokenBalancesByContract', getTokenBalancesByContractArgs, options],
     queryFn: async () => {
-      const res = await indexerGatewayClient.getTokenBalancesByContract(getTokenBalancesByContractArgs)
-      return res
+      return await getTokenBalancesByContract(indexerGatewayClient, getTokenBalancesByContractArgs)
     },
     retry: options?.retry ?? true,
     staleTime: time.oneSecond * 30,

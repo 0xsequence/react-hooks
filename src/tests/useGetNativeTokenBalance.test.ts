@@ -23,7 +23,7 @@ describe('useGetNativeTokenBalance', () => {
 
     expect(result.current.data).toBeDefined()
 
-    const value = BigInt(result.current.data!.balances[0].result.balance || 0)
+    const value = BigInt(result.current.data![0].balance || 0)
 
     expect(value).toBeGreaterThan(0)
   })
