@@ -1,5 +1,11 @@
 # @0xsequence/react-hooks
 
+## 1.0.2
+
+### Patch Changes
+
+- fixed useGetTransactionHistorySummary return values
+
 ## 1.0.1
 
 ### Patch Changes
