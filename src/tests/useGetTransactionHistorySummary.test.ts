@@ -3,26 +3,23 @@ import { HttpResponse, http } from 'msw'
 import { describe, expect, it } from 'vitest'
 
 import { ACCOUNT_ADDRESS } from '../constants/tests'
-import { useGetTransactionHistorySummary } from '../hooks/useGetTransactionHistorySummary'
+import {
+  GetTransactionHistorySummaryArgs,
+  useGetTransactionHistorySummary
+} from '../hooks/useGetTransactionHistorySummary'
 import { createWrapper } from './createWrapper'
 import { server } from './setup'
 
-import { GetTransactionHistoryArgs } from '@0xsequence/indexer'
-
-const getTransactionHistorySummaryArgs: GetTransactionHistoryArgs = {
-  filter: {
-    accountAddress: ACCOUNT_ADDRESS
-  }
+const getTransactionHistorySummaryArgs: GetTransactionHistorySummaryArgs = {
+  accountAddress: ACCOUNT_ADDRESS,
+  chainIds: [1]
 }
 
 describe('useGetTransactionHistorySummary', () => {
   it('should return data with a transaction', async () => {
-    const { result } = renderHook(
-      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1]),
-      {
-        wrapper: createWrapper()
-      }
-    )
+    const { result } = renderHook(() => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs), {
+      wrapper: createWrapper()
+    })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
@@ -41,7 +38,7 @@ describe('useGetTransactionHistorySummary', () => {
     )
 
     const { result } = renderHook(
-      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, [1], { retry: false }),
+      () => useGetTransactionHistorySummary(getTransactionHistorySummaryArgs, { retry: false }),
       {
         wrapper: createWrapper()
       }

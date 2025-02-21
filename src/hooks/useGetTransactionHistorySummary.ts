@@ -3,15 +3,25 @@ import { useQuery } from '@tanstack/react-query'
 import { time } from '../constants/hooks'
 import { useIndexerClients } from './useIndexerClient'
 
-import { GetTransactionHistoryArgs, SequenceIndexer, Transaction } from '@0xsequence/indexer'
+import { SequenceIndexer, Transaction } from '@0xsequence/indexer'
+
+export interface GetTransactionHistorySummaryArgs {
+  accountAddress: string
+  chainIds: number[]
+}
 
 const getTransactionHistorySummary = async (
   indexerClients: Map<number, SequenceIndexer>,
-  getTransactionHistoryArgs: GetTransactionHistoryArgs
+  { accountAddress }: GetTransactionHistorySummaryArgs
 ): Promise<Transaction[]> => {
   const histories = await Promise.all(
     Array.from(indexerClients.values()).map(indexerClient =>
-      indexerClient.getTransactionHistory(getTransactionHistoryArgs)
+      indexerClient.getTransactionHistory({
+        filter: {
+          accountAddress
+        },
+        includeMetadata: true
+      })
     )
   )
 
@@ -26,20 +36,22 @@ const getTransactionHistorySummary = async (
 }
 
 export const useGetTransactionHistorySummary = (
-  getTransactionHistoryArgs: GetTransactionHistoryArgs,
-  chainIds: number[],
+  getTransactionHistorySummaryArgs: GetTransactionHistorySummaryArgs,
   options?: { disabled?: boolean; retry?: boolean }
 ) => {
-  const indexerClients = useIndexerClients(chainIds)
+  const indexerClients = useIndexerClients(getTransactionHistorySummaryArgs.chainIds)
 
   return useQuery({
-    queryKey: ['transactionHistory', getTransactionHistoryArgs, options],
+    queryKey: ['transactionHistory', getTransactionHistorySummaryArgs, options],
     queryFn: async () => {
-      return await getTransactionHistorySummary(indexerClients, getTransactionHistoryArgs)
+      return await getTransactionHistorySummary(indexerClients, getTransactionHistorySummaryArgs)
     },
     retry: options?.retry ?? true,
-    staleTime: time.oneSecond,
+    staleTime: time.oneSecond * 30,
     refetchOnMount: true,
-    enabled: chainIds.length > 0 && !!getTransactionHistoryArgs.filter.accountAddress && !options?.disabled
+    enabled:
+      getTransactionHistorySummaryArgs.chainIds.length > 0 &&
+      !!getTransactionHistorySummaryArgs.accountAddress &&
+      !options?.disabled
   })
 }
